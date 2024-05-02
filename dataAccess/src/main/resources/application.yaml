@@ -1,16 +1,13 @@
 spring:
   application:
     name: dataAccess
-  datasource:
-    url: jdbc:postgresql://127.0.0.1:6000/postgres
-    username: postgres
-    password: 1
+  profiles:
+    active: local
   liquibase:
     change-log: classpath:main/resources/changelog/db.changelog-master.xml
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
 server:
   port: 555
-  host: 0.0.0.0
   servlet:
     context-path: /data-access
