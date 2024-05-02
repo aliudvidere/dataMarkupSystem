@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create_videos_table" author="Пожилой Жмых">
+        <createSequence cycle="false" incrementBy="1" sequenceName="videos_id_seq"/>
+
+        <createTable tableName="videos">
+            <column name="id" type="bigint" defaultValueSequenceNext="videos_id_seq">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="folder" type="varchar(100)">
+                <constraints unique="true" uniqueConstraintName="folder_unique_constraint" nullable="false"/>
+            </column>
+            <column name="video" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="size" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="videos"/>
+            <dropSequence sequenceName="videos_id_seq"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
