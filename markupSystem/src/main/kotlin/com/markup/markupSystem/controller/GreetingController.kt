@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/service")
-class GreetingController(private val imageClient: ImageClient) {
+class GreetingController(
+    private val imageClient: ImageClient) {
 
     @GetMapping("/get-greeting")
     fun getGreeting(): String {

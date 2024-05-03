@@ -5,6 +5,13 @@ spring:
     active: local
   liquibase:
     change-log: classpath:main/resources/changelog/db.changelog-master.xml
+  rabbitmq:
+    host: localhost
+    virtual-host: vhost
+    username: admin
+    password: admin
+    image_queue: image_queue
+    video_queue: video_queue
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
 server:

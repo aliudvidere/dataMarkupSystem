@@ -1,11 +1,11 @@
 package com.markup.markupSystem.scheduler
 
-import com.markup.markupSystem.client.ImageClient
 import com.markup.markupSystem.client.VideoClient
 import com.markup.markupSystem.model.dto.ImageDto
 import com.markup.markupSystem.model.dto.SizeDto
 import com.markup.markupSystem.model.dto.VideoDto
 import com.markup.markupSystem.utils.PhotoToVideoConverter
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -20,12 +20,22 @@ import kotlin.io.path.name
 
 @Component
 class NewVideoScheduler(
-    private val imageClient: ImageClient,
     private val videoClient: VideoClient,
-    private val photoToVideoConverter: PhotoToVideoConverter) {
+    private val photoToVideoConverter: PhotoToVideoConverter,
+    private val rabbitTemplate: RabbitTemplate
+) {
 
     @Value("\${markup_system.source_folder}")
     private lateinit var sourceFolder: String
+
+    @Value("\${spring.rabbitmq.exchange}")
+    private lateinit var exchange: String
+
+    @Value("\${spring.rabbitmq.image_routing_key}")
+    private lateinit var imageRoutingKey: String
+
+    @Value("\${spring.rabbitmq.video_routing_key}")
+    private lateinit var videoRoutingKey: String
 
     @Scheduled(fixedRateString = "\${markup_system.scanNewVideoFixedRate}", initialDelay = 0L)
     fun scanForNewVideo() {
@@ -54,7 +64,7 @@ class NewVideoScheduler(
     private fun saveVideo(folder: String) {
         val video = photoToVideoConverter.convertToVideo(folder)
         val videoDto = VideoDto(folder, Base64.getEncoder().encodeToString(video), getFolderSize(folder))
-        videoClient.saveVideo(videoDto)
+        rabbitTemplate.convertAndSend(exchange, videoRoutingKey, videoDto)
     }
 
     private fun saveImages(folder: String) {
@@ -64,7 +74,7 @@ class NewVideoScheduler(
             .sortedBy { it.name.split(".")[0].toInt() }
             .map { ImageDto(folder, it.name.split(".")[0].toInt(), Base64.getEncoder().encodeToString(Files.readAllBytes(it))) }
 
-        imageClient.saveImageList(images)
+        images.forEach { rabbitTemplate.convertAndSend(exchange, imageRoutingKey, it) }
     }
 
     private fun isChanged(sizeDto: SizeDto): Boolean {

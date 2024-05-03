@@ -23,7 +23,4 @@ interface ImageClient {
 
     @GetMapping(value = ["/get-by-folder-and-number"])
     fun getImageByFolderAndNumber(@RequestParam folder: String, @RequestParam number: Int): ImageDto
-
-    @PostMapping(value = ["/save-list"])
-    fun saveImageList(@RequestBody imageDtoList: List<ImageDto>)
 }

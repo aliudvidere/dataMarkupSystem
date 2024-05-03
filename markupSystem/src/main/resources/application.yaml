@@ -3,6 +3,16 @@ spring:
     name: markupSystem
   profiles:
     active: local
+  rabbitmq:
+    host: localhost
+    virtual-host: vhost
+    username: admin
+    password: admin
+    image_queue: image_queue
+    video_queue: video_queue
+    exchange: exchange
+    image_routing_key: image.key
+    video_routing_key: video.key
 server:
   port: 444
   servlet:

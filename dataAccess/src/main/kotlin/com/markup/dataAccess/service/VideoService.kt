@@ -6,10 +6,12 @@ import com.markup.dataAccess.model.entity.Video
 import com.markup.dataAccess.repository.VideoRepository
 import org.springframework.stereotype.Service
 import com.markup.dataAccess.util.EmptinessChecker.Companion.isNotEmpty
+import org.springframework.amqp.rabbit.annotation.RabbitListener
 
 @Service
 class VideoService(private val videoRepository: VideoRepository) {
 
+    @RabbitListener(queues = ["\${spring.rabbitmq.video_queue}"])
     fun saveVideo(videoDto: VideoDto) {
         val video = videoRepository.getVideoByFolder(videoDto.folder)
         if (isNotEmpty(video))
