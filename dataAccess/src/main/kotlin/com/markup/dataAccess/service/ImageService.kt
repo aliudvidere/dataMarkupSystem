@@ -20,6 +20,6 @@ class ImageService(private val imageRepository: ImageRepository) {
     fun saveImageList(imageDtoList: List<ImageDto>) {
         val storedImages = imageRepository.getImageIdsByFolder(imageDtoList[0].folder)
         val imagesToSave = imageDtoList.filter { it.number !in storedImages }
-        imageRepository.saveAll(imagesToSave.map { Image(null, it.folder, it.number, it.file) })
+        imageRepository.saveAll(imagesToSave.map { Image(it) })
     }
 }

@@ -15,6 +15,7 @@ import java.nio.file.Path
 import java.util.Base64
 import kotlin.io.path.fileSize
 import kotlin.io.path.isDirectory
+import kotlin.io.path.isRegularFile
 import kotlin.io.path.name
 
 @Component
@@ -26,11 +27,11 @@ class NewVideoScheduler(
     @Value("\${markup_system.source_folder}")
     private lateinit var sourceFolder: String
 
-    @Scheduled(fixedRateString = "\${markup_system.scanNewVideoFixedRate}", initialDelay = 1_800_000L)
+    @Scheduled(fixedRateString = "\${markup_system.scanNewVideoFixedRate}", initialDelay = 0L)
     fun scanForNewVideo() {
         val currentFolders = Files.newDirectoryStream(Path.of(sourceFolder))
             .filter { it.isDirectory() }
-            .filter { (it.name.matches("^\\d{4}-\\d{2}-\\d{2}_\\d{2}$".toRegex())) }
+            .filter { (it.name.matches("^\\d{4}-\\d{2}-\\d{2}_\\d+$".toRegex())) }
         val storedFolders = videoClient.getFoldersList()
         val newFolders = arrayListOf<String>()
         currentFolders.forEach{ if (it.name !in storedFolders) newFolders.add(it.name)}
@@ -40,7 +41,7 @@ class NewVideoScheduler(
         }
     }
 
-    @Scheduled(fixedRateString = "\${markup_system.scanNewVideoFixedRate}", initialDelay = 0)
+    @Scheduled(fixedRateString = "\${markup_system.scanNewVideoFixedRate}", initialDelay = 1_800_000L)
     fun checkNewImages() {
         val sizes = videoClient.getSizeList()
         sizes.forEach{ if (isChanged(it)) {
@@ -59,6 +60,7 @@ class NewVideoScheduler(
     private fun saveImages(folder: String) {
         val images = Files.newDirectoryStream(Path.of("$sourceFolder/$folder"))
             .filter { it.name.endsWith(".jpg") }
+            .filter { it.isRegularFile() }
             .sortedBy { it.name.split(".")[0].toInt() }
             .map { ImageDto(folder, it.name.split(".")[0].toInt(), Base64.getEncoder().encodeToString(Files.readAllBytes(it))) }
 

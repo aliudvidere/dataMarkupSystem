@@ -22,7 +22,7 @@ class VideoService(private val photoToVideoConverter: PhotoToVideoConverter) {
     private lateinit var isProd: String
 
     fun streamVideo(folder: String): ByteArray {
-        return photoToVideoConverter.convertToVideo("$sourceFolder/$folder")
+        return photoToVideoConverter.convertToVideo(folder)
     }
 
     fun addDescription(description: String, folder: String) {
