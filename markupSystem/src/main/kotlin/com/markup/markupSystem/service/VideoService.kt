@@ -18,9 +18,6 @@ class VideoService(private val photoToVideoConverter: PhotoToVideoConverter) {
     @Value("\${markup_system.source_folder}")
     private lateinit var sourceFolder: String
 
-    @Value("\${markup_system.is_prod}")
-    private lateinit var isProd: String
-
     fun streamVideo(folder: String): ByteArray {
         return photoToVideoConverter.convertToVideo(folder)
     }
@@ -43,8 +40,9 @@ class VideoService(private val photoToVideoConverter: PhotoToVideoConverter) {
         val videos = arrayListOf<VideoFrontDto>()
         Files.newDirectoryStream(Path.of(sourceFolder))
             .filter { it.isDirectory() }
+            .filter { (it.name.matches("^\\d{4}-\\d{2}-\\d{2}_\\d+$".toRegex())) }
             .map { videos.add(VideoFrontDto(it.name, if (Files.exists(Path.of("$it/description.txt"))) Path.of("$it/description.txt").readLines() else arrayListOf())) }
             .toList()
-        return if (isProd.toBoolean()) videos.sortedBy { it.name.split("_")[1].toInt() } else videos
+        return videos.sortedBy { it.name.split("_")[1].toInt() }
     }
 }

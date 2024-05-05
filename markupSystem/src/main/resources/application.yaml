@@ -17,9 +17,5 @@ server:
   port: 444
   servlet:
     context-path: /markup
-logging:
-  level:
-    root: DEBUG
-    org.springframework.web: DEBUG
 markup_system:
   scanNewVideoFixedRate: 3_600_000

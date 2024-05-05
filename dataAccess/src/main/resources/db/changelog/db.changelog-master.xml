@@ -8,4 +8,6 @@
 
     <include file="changesets/createVideosTable.xml" relativeToChangelogFile="true"/>
 
+    <include file="changesets/createDescriptionTable.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

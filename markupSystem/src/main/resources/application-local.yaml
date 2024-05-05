@@ -1,3 +1,6 @@
+logging:
+  level:
+    root: DEBUG
+    org.springframework.web: DEBUG
 markup_system:
   source_folder: /Users/vladimirberman/Documents/Downloads
-  is_prod: false
