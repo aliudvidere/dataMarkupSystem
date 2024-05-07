@@ -18,4 +18,8 @@ class ImageService(private val imageRepository: ImageRepository) {
         val image = imageRepository.getImageByFolderAndImageId(folder, number)
         return if (image != null) ImageDto(image.folder, image.imageId, image.imageEncoded) else ImageDto()
     }
+
+    fun getImageNumbersByFolder(folder: String): List<Int> {
+        return imageRepository.getImageIdsByFolder(folder)
+    }
 }

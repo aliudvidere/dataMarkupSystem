@@ -3,9 +3,11 @@ package com.markup.dataAccess.repository
 import com.markup.dataAccess.model.dto.SizeDto
 import com.markup.dataAccess.model.entity.Video
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface VideoRepository: JpaRepository<Video, Long> {
@@ -20,4 +22,9 @@ interface VideoRepository: JpaRepository<Video, Long> {
 
     @Query("select v from Video v")
     fun getAllSize(): List<SizeDto>
+
+    @Modifying
+    @Transactional
+    @Query("update Video v set v.description = concat(v.description, :description) where v.folder = :folder")
+    fun setDescription(@Param("folder") folder: String, @Param("description") description: String)
 }

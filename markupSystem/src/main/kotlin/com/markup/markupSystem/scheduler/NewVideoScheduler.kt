@@ -1,5 +1,6 @@
 package com.markup.markupSystem.scheduler
 
+import com.markup.markupSystem.client.ImageClient
 import com.markup.markupSystem.client.VideoClient
 import com.markup.markupSystem.model.dto.ImageDto
 import com.markup.markupSystem.model.dto.SizeDto
@@ -17,6 +18,7 @@ import kotlin.io.path.*
 
 @Component
 class NewVideoScheduler(
+    private val imageClient: ImageClient,
     private val videoClient: VideoClient,
     private val photoToVideoConverter: PhotoToVideoConverter,
     private val rabbitTemplate: RabbitTemplate
@@ -65,11 +67,15 @@ class NewVideoScheduler(
     }
 
     private fun saveImages(folder: String) {
+        val storedImages = imageClient.getImageNumbersByFolder(folder)
         val images = Files.newDirectoryStream(Path.of("$sourceFolder/$folder"))
+            .asSequence()
             .filter { it.name.endsWith(".jpg") }
+            .filter { it.name.split(".")[0].toInt() !in storedImages }
             .filter { it.isRegularFile() }
             .sortedBy { it.name.split(".")[0].toInt() }
             .map { ImageDto(folder, it.name.split(".")[0].toInt(), Base64.getEncoder().encodeToString(Files.readAllBytes(it))) }
+            .toList()
 
         images.forEach { rabbitTemplate.convertAndSend(exchange, imageRoutingKey, it) }
     }

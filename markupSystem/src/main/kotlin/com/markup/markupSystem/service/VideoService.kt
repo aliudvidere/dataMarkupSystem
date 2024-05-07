@@ -1,6 +1,7 @@
 package com.markup.markupSystem.service
 
 import com.markup.markupSystem.client.VideoClient
+import com.markup.markupSystem.model.dto.DescriptionDto
 import com.markup.markupSystem.model.dto.VideoFrontDto
 import com.markup.markupSystem.utils.PhotoToVideoConverter
 import org.springframework.beans.factory.annotation.Value
@@ -32,6 +33,7 @@ class VideoService(private val photoToVideoConverter: PhotoToVideoConverter,
     }
 
     fun addDescription(description: String, folder: String) {
+        videoClient.setDescription(DescriptionDto(folder, description))
         val path = Paths.get("$sourceFolder/$folder/description.txt")
         if (Files.exists(path)) {
             Files.writeString(path, "$description\n", StandardOpenOption.APPEND)

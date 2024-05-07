@@ -1,5 +1,6 @@
 package com.markup.dataAccess.service
 
+import com.markup.dataAccess.model.dto.DescriptionDto
 import com.markup.dataAccess.model.dto.SizeDto
 import com.markup.dataAccess.model.dto.VideoDto
 import com.markup.dataAccess.model.entity.Video
@@ -48,5 +49,9 @@ class VideoService(private val videoRepository: VideoRepository) {
 
     fun getVideoPage(pageable: Pageable): Page<VideoDto> {
         return videoRepository.findAll(pageable).map { VideoDto(it!!.folder, it.videoEncoded, it.description, it.size) }
+    }
+
+    fun setDescription(descriptionDto: DescriptionDto) {
+        videoRepository.setDescription(descriptionDto.folder, descriptionDto.description)
     }
 }

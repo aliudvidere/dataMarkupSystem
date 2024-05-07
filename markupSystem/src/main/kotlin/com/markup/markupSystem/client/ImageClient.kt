@@ -23,4 +23,7 @@ interface ImageClient {
 
     @GetMapping(value = ["/get-by-folder-and-number"])
     fun getImageByFolderAndNumber(@RequestParam folder: String, @RequestParam number: Int): ImageDto
+
+    @GetMapping("/image-numbers-by-folder")
+    fun getImageNumbersByFolder(@RequestParam folder: String): List<Int>
 }

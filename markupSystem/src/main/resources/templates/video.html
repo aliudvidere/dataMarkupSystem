@@ -18,7 +18,7 @@
         </form>
     </div>
     <div class="text-left container">
-        <a th:href="'/markup/video-list'" class="btn btn-info" th:text="'Back to list'" style="position: absolute;top: 40%;left: 10%;transform:translateX(-50%);"/>
+        <a th:href="'/markup/video-page?page=' + ${pageNumber} + '&size=' + ${pageSize}" class="btn btn-info" th:text="'Back to list'" style="position: absolute;top: 40%;left: 10%;transform:translateX(-50%);"/>
     </div>
     <div class="text-center container">
         <h1 th:text="'Descriptions'" style="position: absolute; top: 35%; left:88%; transform: translateX(-50%);"/>

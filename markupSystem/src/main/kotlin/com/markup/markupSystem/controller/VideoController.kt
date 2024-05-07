@@ -23,6 +23,8 @@ class VideoController(
     private val paginationArray: List<Int>
     ) {
 
+    private var currentPage = 0
+
     @GetMapping("/video-list")
     fun getVideoList(model: Model): String {
         model.addAttribute("videoList", videoService.getVideoList())
@@ -32,6 +34,7 @@ class VideoController(
     @GetMapping("/video-page")
     fun getVideoPage(@PageableDefault(size = 5, page = 0) pageable: Pageable, model: Model): String {
         pageSize = pageable.pageSize
+        currentPage = pageable.pageNumber
         model.addAttribute("paginatedData", videoService.getVideoPage(pageable))
         model.addAttribute("pageSize", pageSize)
         model.addAttribute("paginationArray", paginationArray)
@@ -51,6 +54,8 @@ class VideoController(
     @GetMapping("/video")
     fun getVideo(@RequestParam folder: String, model: Model): String {
         model.addAttribute("video", videoService.getVideo(folder))
+        model.addAttribute("pageSize", pageSize)
+        model.addAttribute("pageNumber", currentPage)
         return "video"
     }
 

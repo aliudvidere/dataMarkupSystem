@@ -1,6 +1,7 @@
 package com.markup.markupSystem.client
 
 import com.markup.markupSystem.config.FeignClientConfiguration
+import com.markup.markupSystem.model.dto.DescriptionDto
 import com.markup.markupSystem.model.dto.SizeDto
 import com.markup.markupSystem.model.dto.VideoDto
 import org.springframework.cloud.openfeign.FeignClient
@@ -36,4 +37,7 @@ interface VideoClient {
 
     @GetMapping("/get-video-page")
     fun getVideoPage(@SpringQueryMap pageable: Pageable): Page<VideoDto>
+
+    @PostMapping("/set-description")
+    fun setDescription(@RequestBody descriptionDto: DescriptionDto)
 }

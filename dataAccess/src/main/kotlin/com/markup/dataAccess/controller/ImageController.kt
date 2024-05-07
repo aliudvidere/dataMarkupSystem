@@ -20,4 +20,9 @@ class ImageController(private val imageService: ImageService) {
     fun getImageByFolderAndNumber(@RequestParam folder: String, @RequestParam number: Int): ImageDto {
         return imageService.getImageByFolderAndNumber(folder, number)
     }
+
+    @GetMapping("/image-numbers-by-folder")
+    fun getImageNumbersByFolder(@RequestParam folder: String): List<Int> {
+        return imageService.getImageNumbersByFolder(folder)
+    }
 }
