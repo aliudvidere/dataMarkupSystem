@@ -1,8 +1,11 @@
 package com.markup.markupSystem.service
 
+import com.markup.markupSystem.client.VideoClient
 import com.markup.markupSystem.model.dto.VideoFrontDto
 import com.markup.markupSystem.utils.PhotoToVideoConverter
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.nio.file.Files
 import java.nio.file.Path
@@ -13,7 +16,8 @@ import kotlin.io.path.name
 import kotlin.io.path.readLines
 
 @Service
-class VideoService(private val photoToVideoConverter: PhotoToVideoConverter) {
+class VideoService(private val photoToVideoConverter: PhotoToVideoConverter,
+    private val videoClient: VideoClient) {
 
     @Value("\${markup_system.source_folder}")
     private lateinit var sourceFolder: String
@@ -36,7 +40,15 @@ class VideoService(private val photoToVideoConverter: PhotoToVideoConverter) {
         return VideoFrontDto(folder, if (Files.exists(Path.of("$sourceFolder/$folder/description.txt"))) Path.of("$sourceFolder/$folder/description.txt").readLines() else arrayListOf())
     }
 
+
     fun getVideoList(): List<VideoFrontDto> {
+        return arrayListOf()
+    }
+
+    fun getVideoPage(pageable: Pageable): Page<VideoFrontDto> {
+        return videoClient.getVideoPage(pageable).map { VideoFrontDto(it.folder, it.description) }
+    }
+    fun getVideoListFromPC(): List<VideoFrontDto> {
         val videos = arrayListOf<VideoFrontDto>()
         Files.newDirectoryStream(Path.of(sourceFolder))
             .filter { it.isDirectory() }

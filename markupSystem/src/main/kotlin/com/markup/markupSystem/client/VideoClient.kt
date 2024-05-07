@@ -4,6 +4,9 @@ import com.markup.markupSystem.config.FeignClientConfiguration
 import com.markup.markupSystem.model.dto.SizeDto
 import com.markup.markupSystem.model.dto.VideoDto
 import org.springframework.cloud.openfeign.FeignClient
+import org.springframework.cloud.openfeign.SpringQueryMap
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -30,4 +33,7 @@ interface VideoClient {
 
     @GetMapping("/get-size-list")
     fun getSizeList(): List<SizeDto>
+
+    @GetMapping("/get-video-page")
+    fun getVideoPage(@SpringQueryMap pageable: Pageable): Page<VideoDto>
 }

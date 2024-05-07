@@ -5,4 +5,5 @@ import java.io.Serializable
 data class VideoDto(
     val folder: String,
     val file: String,
+    val description: String,
     val size: Long): Serializable

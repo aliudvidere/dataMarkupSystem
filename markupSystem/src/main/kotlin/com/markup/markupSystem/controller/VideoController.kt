@@ -1,6 +1,7 @@
 package com.markup.markupSystem.controller
 
 import com.markup.markupSystem.service.VideoService
+import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -16,6 +17,12 @@ class VideoController(private val videoService: VideoService) {
     fun getVideoList(model: Model): String {
         model.addAttribute("videoList", videoService.getVideoList())
         return "video-list"
+    }
+
+    @GetMapping("/video-page")
+    fun getVideoPage(pageable: Pageable, model: Model): String {
+        model.addAttribute("paginatedData", videoService.getVideoPage(pageable))
+        return "video-page"
     }
 
     @GetMapping("/stream-video/{folder}")

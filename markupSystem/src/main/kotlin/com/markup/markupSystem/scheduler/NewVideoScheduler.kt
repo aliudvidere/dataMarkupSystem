@@ -13,10 +13,7 @@ import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.Base64
-import kotlin.io.path.fileSize
-import kotlin.io.path.isDirectory
-import kotlin.io.path.isRegularFile
-import kotlin.io.path.name
+import kotlin.io.path.*
 
 @Component
 class NewVideoScheduler(
@@ -63,7 +60,7 @@ class NewVideoScheduler(
 
     private fun saveVideo(folder: String) {
         val video = photoToVideoConverter.convertToVideo(folder)
-        val videoDto = VideoDto(folder, Base64.getEncoder().encodeToString(video), getFolderSize(folder))
+        val videoDto = VideoDto(folder, Base64.getEncoder().encodeToString(video), getDescription(folder), getFolderSize(folder))
         rabbitTemplate.convertAndSend(exchange, videoRoutingKey, videoDto)
     }
 
@@ -75,6 +72,11 @@ class NewVideoScheduler(
             .map { ImageDto(folder, it.name.split(".")[0].toInt(), Base64.getEncoder().encodeToString(Files.readAllBytes(it))) }
 
         images.forEach { rabbitTemplate.convertAndSend(exchange, imageRoutingKey, it) }
+    }
+
+    private fun getDescription(folder: String): String {
+        val description = Path.of("$sourceFolder/$folder/description.txt")
+        return if (description.exists()) Files.readString(description) else ""
     }
 
     private fun isChanged(sizeDto: SizeDto): Boolean {

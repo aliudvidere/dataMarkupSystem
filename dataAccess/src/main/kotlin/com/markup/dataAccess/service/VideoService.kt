@@ -7,6 +7,8 @@ import com.markup.dataAccess.repository.VideoRepository
 import org.springframework.stereotype.Service
 import com.markup.dataAccess.util.EmptinessChecker.Companion.isNotEmpty
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 @Service
 class VideoService(private val videoRepository: VideoRepository) {
@@ -27,7 +29,7 @@ class VideoService(private val videoRepository: VideoRepository) {
 
     fun getVideoByFolder(folder: String): VideoDto {
         val video = videoRepository.getVideoByFolder(folder)
-        return if (isNotEmpty(video)) VideoDto(video!!.folder, video.videoEncoded, video.size) else VideoDto()
+        return if (isNotEmpty(video)) VideoDto(video!!.folder, video.videoEncoded, "", video.size) else VideoDto()
     }
 
     fun getVideoSize(folder: String): Long {
@@ -41,5 +43,9 @@ class VideoService(private val videoRepository: VideoRepository) {
 
     fun getSizeList(): List<SizeDto> {
         return videoRepository.getAllSize()
+    }
+
+    fun getVideoPage(pageable: Pageable): Page<VideoDto> {
+        return videoRepository.findAll(pageable).map { VideoDto(it!!.folder, it.videoEncoded, "", it.size) }
     }
 }
