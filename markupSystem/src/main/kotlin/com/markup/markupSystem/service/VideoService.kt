@@ -55,7 +55,9 @@ class VideoService(private val photoToVideoConverter: PhotoToVideoConverter,
     }
 
     fun getVideoPage(pageable: Pageable): Page<VideoFrontDto> {
-        return videoClient.getVideoPage(pageable).map { VideoFrontDto(it.folder, it.description) }
+        val videoPage = videoClient.getVideoPage(pageable)
+        val videoDtoPage = videoPage.map { VideoFrontDto(it.folder, it.description)  }
+        return videoDtoPage
     }
     fun getVideoListFromPC(): List<VideoFrontDto> {
         val videos = arrayListOf<VideoFrontDto>()

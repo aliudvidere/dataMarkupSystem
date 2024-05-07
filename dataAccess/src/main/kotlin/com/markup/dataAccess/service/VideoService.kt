@@ -47,6 +47,6 @@ class VideoService(private val videoRepository: VideoRepository) {
     }
 
     fun getVideoPage(pageable: Pageable): Page<VideoDto> {
-        return videoRepository.findAll(pageable).map { VideoDto(it!!.folder, it.videoEncoded, "", it.size) }
+        return videoRepository.findAll(pageable).map { VideoDto(it!!.folder, it.videoEncoded, it.description, it.size) }
     }
 }

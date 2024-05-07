@@ -8,4 +8,9 @@ data class VideoFrontDto(val name: String,
     fun getTextDescription(): String {
         return description.joinToString("\n◦", prefix = "◦")
     }
+
+    fun getListDescription(): String {
+        return description.joinToString("; ")
+    }
+
 }

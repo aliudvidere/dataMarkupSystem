@@ -1,7 +1,9 @@
 package com.markup.markupSystem.controller
 
 import com.markup.markupSystem.service.VideoService
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -11,7 +13,15 @@ import java.io.IOException
 
 
 @Controller
-class VideoController(private val videoService: VideoService) {
+class VideoController(
+    private val videoService: VideoService,
+
+    @Value("\${markup_system.page_size}")
+    private var pageSize: Int,
+
+    @Value("\${markup_system.pagination_list}")
+    private val paginationArray: List<Int>
+    ) {
 
     @GetMapping("/video-list")
     fun getVideoList(model: Model): String {
@@ -20,8 +30,11 @@ class VideoController(private val videoService: VideoService) {
     }
 
     @GetMapping("/video-page")
-    fun getVideoPage(pageable: Pageable, model: Model): String {
+    fun getVideoPage(@PageableDefault(size = 5, page = 0) pageable: Pageable, model: Model): String {
+        pageSize = pageable.pageSize
         model.addAttribute("paginatedData", videoService.getVideoPage(pageable))
+        model.addAttribute("pageSize", pageSize)
+        model.addAttribute("paginationArray", paginationArray)
         return "video-page"
     }
 

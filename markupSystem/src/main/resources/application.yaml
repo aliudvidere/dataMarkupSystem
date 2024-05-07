@@ -19,3 +19,5 @@ server:
     context-path: /markup
 markup_system:
   scanNewVideoFixedRate: 3_600_000
+  pagination_list: 3, 5, 10, 15
+  page_size: 3
