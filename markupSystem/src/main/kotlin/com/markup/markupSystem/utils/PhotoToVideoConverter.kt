@@ -1,10 +1,12 @@
 package com.markup.markupSystem.utils
 
+import com.markup.markupSystem.model.dto.VideoDto
 import org.jcodec.api.awt.AWTSequenceEncoder
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.File
 import java.nio.file.*
+import java.util.Base64
 import javax.imageio.ImageIO
 import kotlin.io.path.createFile
 import kotlin.io.path.deleteExisting
@@ -33,6 +35,10 @@ class PhotoToVideoConverter {
         val bytes = Files.readAllBytes(path)
         path.deleteExisting()
         return bytes
+    }
+
+    fun convertToVideo(videoDto: VideoDto): ByteArray {
+        return Base64.getDecoder().decode(videoDto.file)
     }
 }
 

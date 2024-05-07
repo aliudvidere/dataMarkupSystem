@@ -22,8 +22,13 @@ class VideoService(private val photoToVideoConverter: PhotoToVideoConverter,
     @Value("\${markup_system.source_folder}")
     private lateinit var sourceFolder: String
 
-    fun streamVideo(folder: String): ByteArray {
+    fun streamVideoFromPC(folder: String): ByteArray {
         return photoToVideoConverter.convertToVideo(folder)
+    }
+
+    fun streamVideo(folder: String): ByteArray {
+        val video = videoClient.getVideoByFolder(folder)
+        return photoToVideoConverter.convertToVideo(video)
     }
 
     fun addDescription(description: String, folder: String) {
@@ -36,10 +41,14 @@ class VideoService(private val photoToVideoConverter: PhotoToVideoConverter,
         }
     }
 
-    fun getVideo(folder: String): VideoFrontDto {
+    fun getVideoFromPC(folder: String): VideoFrontDto {
         return VideoFrontDto(folder, if (Files.exists(Path.of("$sourceFolder/$folder/description.txt"))) Path.of("$sourceFolder/$folder/description.txt").readLines() else arrayListOf())
     }
 
+    fun getVideo(folder: String): VideoFrontDto {
+        val video = videoClient.getVideoByFolder(folder)
+        return VideoFrontDto(video.folder, video.description)
+    }
 
     fun getVideoList(): List<VideoFrontDto> {
         return arrayListOf()

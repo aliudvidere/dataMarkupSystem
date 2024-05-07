@@ -1,6 +1,5 @@
 package com.markup.dataAccess.model.entity
 
-import com.markup.dataAccess.model.dto.ImageDto
 import com.markup.dataAccess.model.dto.VideoDto
 import jakarta.persistence.*
 
@@ -22,8 +21,11 @@ data class Video(
     var videoEncoded: String,
 
     @Column(name = "size", nullable = false)
-    var size: Long
+    var size: Long,
+
+    @Column(name = "description", nullable = false)
+    var description: String
 
 ) {
-    constructor(videoDto: VideoDto) : this(null, videoDto.folder, videoDto.file, videoDto.size)
+    constructor(videoDto: VideoDto) : this(null, videoDto.folder, videoDto.file, videoDto.size, videoDto.description)
 }

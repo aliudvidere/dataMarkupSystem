@@ -20,6 +20,7 @@ class VideoService(private val videoRepository: VideoRepository) {
         {
             video!!.videoEncoded = videoDto.file
             video.size = videoDto.size
+            video.description = videoDto.description
             videoRepository.save(video)
         }
         else {
@@ -29,7 +30,7 @@ class VideoService(private val videoRepository: VideoRepository) {
 
     fun getVideoByFolder(folder: String): VideoDto {
         val video = videoRepository.getVideoByFolder(folder)
-        return if (isNotEmpty(video)) VideoDto(video!!.folder, video.videoEncoded, "", video.size) else VideoDto()
+        return if (isNotEmpty(video)) VideoDto(video!!.folder, video.videoEncoded, video.description, video.size) else VideoDto()
     }
 
     fun getVideoSize(folder: String): Long {
