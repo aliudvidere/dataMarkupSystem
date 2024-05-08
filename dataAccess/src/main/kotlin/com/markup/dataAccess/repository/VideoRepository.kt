@@ -2,6 +2,8 @@ package com.markup.dataAccess.repository
 
 import com.markup.dataAccess.model.dto.SizeDto
 import com.markup.dataAccess.model.entity.Video
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -27,4 +29,7 @@ interface VideoRepository: JpaRepository<Video, Long> {
     @Transactional
     @Query("update Video v set v.description = concat(v.description, :description) where v.folder = :folder")
     fun setDescription(@Param("folder") folder: String, @Param("description") description: String)
+
+    @Query("SELECT v FROM Video v ORDER BY CAST(SPLIT_PART(v.folder, '_', 2) AS integer)")
+    fun findAllOrderByFolderNumber(pageable: Pageable): Page<Video>
 }

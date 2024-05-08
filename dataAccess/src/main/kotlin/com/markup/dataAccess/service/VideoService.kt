@@ -48,7 +48,7 @@ class VideoService(private val videoRepository: VideoRepository) {
     }
 
     fun getVideoPage(pageable: Pageable): Page<VideoDto> {
-        return videoRepository.findAll(pageable).map { VideoDto(it!!.folder, it.videoEncoded, it.description, it.size) }
+        return videoRepository.findAllOrderByFolderNumber(pageable).map { VideoDto(it!!.folder, it.videoEncoded, it.description, it.size) }
     }
 
     fun setDescription(descriptionDto: DescriptionDto) {
