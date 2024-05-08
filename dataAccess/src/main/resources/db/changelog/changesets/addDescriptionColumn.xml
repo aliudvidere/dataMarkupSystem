@@ -7,7 +7,8 @@
     <changeSet id="alter_videos_table_add_description" author="Пожилой Жмых">
         <addColumn tableName="videos">
             <column name="description"
-                    type="varchar"/>
+                    type="varchar"
+                    defaultValue=""/>
         </addColumn>
         <rollback>
             <dropColumn tableName="videos" columnName="description"/>
