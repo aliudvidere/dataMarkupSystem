@@ -17,23 +17,44 @@
 
 <!-- Pagination links -->
 <div th:if="${paginatedData.totalPages > 1}">
-    <ul class="pagination justify-content-center">
-        <li th:class="${paginatedData.first ? 'page-item disabled' : 'page-item'}">
-            <a class="page-link" th:href="'/markup/video-page?page=0&size=' + ${pageSize}">First</a>
-        </li>
-        <li th:class="${paginatedData.first ? 'page-item disabled' : 'page-item'}">
-            <a class="page-link" th:href="'/markup/video-page?page=' + ${paginatedData.number - 1} + '&size=' + ${pageSize}">Previous</a>
-        </li>
-        <li th:each="i : ${#numbers.sequence(0, paginatedData.totalPages - 1)}" th:class="${paginatedData.number == i ? 'page-item active' : 'page-item'}">
-            <a class="page-link" th:href="'/markup/video-page?page=' + ${i} + '&size=' + ${pageSize}" th:text="${i + 1}">Page</a>
-        </li>
-        <li th:class="${paginatedData.last ? 'page-item disabled' : 'page-item'}">
-            <a class="page-link" th:href="'/markup/video-page?page=' + ${paginatedData.number + 1} + '&size=' + ${pageSize}">Next</a>
-        </li>
-        <li th:class="${paginatedData.last ? 'page-item disabled' : 'page-item'}">
-            <a class="page-link" th:href="'/markup/video-page?page=' + ${paginatedData.totalPages - 1} + '&size=' + ${pageSize}">Last</a>
-        </li>
-    </ul>
+    <div th:if="${paginatedData.totalPages <= 30}">
+        <ul class="pagination justify-content-center">
+            <li th:class="${paginatedData.first ? 'page-item disabled' : 'page-item'}">
+                <a class="page-link" th:href="'/markup/video-page?page=0&size=' + ${pageSize}">First</a>
+            </li>
+            <li th:class="${paginatedData.first ? 'page-item disabled' : 'page-item'}">
+                <a class="page-link" th:href="'/markup/video-page?page=' + ${paginatedData.number - 1} + '&size=' + ${pageSize}">Previous</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, paginatedData.totalPages - 1)}" th:class="${paginatedData.number == i ? 'page-item active' : 'page-item'}">
+                <a class="page-link" th:href="'/markup/video-page?page=' + ${i} + '&size=' + ${pageSize}" th:text="${i + 1}">Page</a>
+            </li>
+            <li th:class="${paginatedData.last ? 'page-item disabled' : 'page-item'}">
+                <a class="page-link" th:href="'/markup/video-page?page=' + ${paginatedData.number + 1} + '&size=' + ${pageSize}">Next</a>
+            </li>
+            <li th:class="${paginatedData.last ? 'page-item disabled' : 'page-item'}">
+                <a class="page-link" th:href="'/markup/video-page?page=' + ${paginatedData.totalPages - 1} + '&size=' + ${pageSize}">Last</a>
+            </li>
+        </ul>
+    </div>
+    <div th:if="${paginatedData.totalPages > 30}">
+        <ul class="pagination justify-content-center">
+            <li th:class="${paginatedData.first ? 'page-item disabled' : 'page-item'}">
+                <a class="page-link" th:href="'/markup/video-page?page=0&size=' + ${pageSize}">First</a>
+            </li>
+            <li th:class="${paginatedData.first ? 'page-item disabled' : 'page-item'}">
+                <a class="page-link" th:href="'/markup/video-page?page=' + ${paginatedData.number - 1} + '&size=' + ${pageSize}">Previous</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(paginatedData.number - 5 <= 0 ? 0 : paginatedData.number - 5, paginatedData.number + 5 > paginatedData.totalPages -1 ? paginatedData.totalPages - 1 : paginatedData.number + 5)}" th:class="${paginatedData.number == i ? 'page-item active' : 'page-item'}">
+                <a class="page-link" th:href="'/markup/video-page?page=' + ${i} + '&size=' + ${pageSize}" th:text="${i + 1}">Page</a>
+            </li>
+            <li th:class="${paginatedData.last ? 'page-item disabled' : 'page-item'}">
+                <a class="page-link" th:href="'/markup/video-page?page=' + ${paginatedData.number + 1} + '&size=' + ${pageSize}">Next</a>
+            </li>
+            <li th:class="${paginatedData.last ? 'page-item disabled' : 'page-item'}">
+                <a class="page-link" th:href="'/markup/video-page?page=' + ${paginatedData.totalPages - 1} + '&size=' + ${pageSize}">Last</a>
+            </li>
+        </ul>
+    </div>
     <div class="container text-center">
         <div class="row justify-content-center">
             <div class="col-md-1">
