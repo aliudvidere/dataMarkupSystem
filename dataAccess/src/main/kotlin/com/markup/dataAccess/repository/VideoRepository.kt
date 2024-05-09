@@ -32,4 +32,7 @@ interface VideoRepository: JpaRepository<Video, Long> {
 
     @Query("SELECT v FROM Video v ORDER BY CAST(SPLIT_PART(v.folder, '_', 2) AS integer)")
     fun findAllOrderByFolderNumber(pageable: Pageable): Page<Video>
+
+    @Query("SELECT v.folder FROM Video v ORDER BY CAST(SPLIT_PART(v.folder, '_', 2) AS integer)")
+    fun findAllFoldersOrderByFolderNumber(): List<String>
 }

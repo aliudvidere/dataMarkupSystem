@@ -64,5 +64,21 @@ class VideoController(
         videoService.addDescription(description, folder)
         return "redirect:/video?folder=$folder"
     }
+
+    @GetMapping("/next")
+    fun getNextVideoByOrder(@RequestParam folder: String, model: Model): String {
+        model.addAttribute("video", videoService.getNextVideoByOrder(folder))
+        model.addAttribute("pageSize", pageSize)
+        model.addAttribute("pageNumber", currentPage)
+        return "video"
+    }
+
+    @GetMapping("/prev")
+    fun getPreviousVideoByOrder(@RequestParam folder: String, model: Model): String {
+        model.addAttribute("video", videoService.getPreviousVideoByOrder(folder))
+        model.addAttribute("pageSize", pageSize)
+        model.addAttribute("pageNumber", currentPage)
+        return "video"
+    }
 }
 

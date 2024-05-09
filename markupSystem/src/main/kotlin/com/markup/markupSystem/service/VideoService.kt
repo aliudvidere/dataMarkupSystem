@@ -70,4 +70,16 @@ class VideoService(private val photoToVideoConverter: PhotoToVideoConverter,
             .toList()
         return videos.sortedBy { it.name.split("_")[1].toInt() }
     }
+
+    fun getNextVideoByOrder(folder: String): VideoFrontDto {
+        val video = videoClient.getNextVideoByOrder(folder)
+        return VideoFrontDto(video.folder, video.description)
+    }
+
+    fun getPreviousVideoByOrder(folder: String): VideoFrontDto {
+        val video = videoClient.getPreviousVideoByOrder(folder)
+        return VideoFrontDto(video.folder, video.description)
+    }
+
+
 }

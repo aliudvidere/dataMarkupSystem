@@ -40,4 +40,10 @@ interface VideoClient {
 
     @PostMapping("/set-description")
     fun setDescription(@RequestBody descriptionDto: DescriptionDto)
+
+    @GetMapping("/get-next-by-order")
+    fun getNextVideoByOrder(@RequestParam folder: String): VideoDto
+
+    @GetMapping("/get-prev-by-order")
+    fun getPreviousVideoByOrder(@RequestParam folder: String): VideoDto
 }

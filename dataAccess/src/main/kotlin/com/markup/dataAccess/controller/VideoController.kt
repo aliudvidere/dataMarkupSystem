@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 class VideoController(private val videoService: VideoService) {
 
     @GetMapping("/get-by-folder")
-    fun getImageByFolderAndNumber(@RequestParam folder: String): VideoDto {
+    fun getVideoByFolderAndNumber(@RequestParam folder: String): VideoDto {
         return videoService.getVideoByFolder(folder)
     }
 
@@ -45,5 +45,15 @@ class VideoController(private val videoService: VideoService) {
     @PostMapping("/set-description")
     fun setDescription(@RequestBody descriptionDto: DescriptionDto) {
         videoService.setDescription(descriptionDto)
+    }
+
+    @GetMapping("/get-next-by-order")
+    fun getNextVideoByOrder(@RequestParam folder: String): VideoDto {
+        return videoService.getNextVideoByOrder(folder)
+    }
+
+    @GetMapping("/get-prev-by-order")
+    fun getPreviousVideoByOrder(@RequestParam folder: String): VideoDto {
+        return videoService.getPreviousVideoByOrder(folder)
     }
 }

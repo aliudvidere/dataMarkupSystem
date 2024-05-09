@@ -54,4 +54,22 @@ class VideoService(private val videoRepository: VideoRepository) {
     fun setDescription(descriptionDto: DescriptionDto) {
         videoRepository.setDescription(descriptionDto.folder, descriptionDto.description)
     }
+
+    fun getNextVideoByOrder(folder: String): VideoDto {
+        val folders = videoRepository.findAllFoldersOrderByFolderNumber()
+        val id = folders.indexOf(folder) + 1
+        if (id == 0 || id >= folders.size) {
+            return getVideoByFolder(folder)
+        }
+        return getVideoByFolder(folders[id])
+    }
+
+    fun getPreviousVideoByOrder(folder: String): VideoDto {
+        val folders = videoRepository.findAllFoldersOrderByFolderNumber()
+        val id = folders.indexOf(folder) - 1
+        if (id < 0) {
+            return getVideoByFolder(folder)
+        }
+        return getVideoByFolder(folders[id])
+    }
 }
