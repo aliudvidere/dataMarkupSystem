@@ -72,4 +72,8 @@ class VideoService(private val videoRepository: VideoRepository) {
         }
         return getVideoByFolder(folders[id])
     }
+
+    fun getMarkedVideoNumber(): Long {
+        return videoRepository.countVideoByDescriptionNotLike("")
+    }
 }

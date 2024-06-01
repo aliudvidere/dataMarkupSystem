@@ -81,5 +81,7 @@ class VideoService(private val photoToVideoConverter: PhotoToVideoConverter,
         return VideoFrontDto(video.folder, video.description)
     }
 
-
+    fun getMarkedVideoNumber(): Long {
+        return videoClient.getMarkedVideoNumber()
+    }
 }

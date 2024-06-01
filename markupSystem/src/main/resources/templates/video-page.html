@@ -7,7 +7,7 @@
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
-<h1 th:text="'Total number of videos: ' + ${paginatedData.totalElements}" style="position: absolute;top: 5%;left: 50%;transform:translateX(-50%);"></h1>
+<h1 th:text="'Total number of videos: ' + ${paginatedData.totalElements} + '. Marked videos: ' + ${markedVideosNumber}" style="position: absolute;top: 5%;left: 50%;transform:translateX(-50%);"></h1>
 <div class="text-center container mt-5 mb-5">
     <div th:each="video: ${paginatedData.content}" class="alert alert-info mt-1 mb-1">
         <a th:href="'/markup/video' + '?folder=' + ${video.getName()}" class="btn btn-success" th:text="${video.getName()}"></a>

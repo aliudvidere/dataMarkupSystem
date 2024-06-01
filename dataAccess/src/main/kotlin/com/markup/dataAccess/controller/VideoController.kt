@@ -56,4 +56,9 @@ class VideoController(private val videoService: VideoService) {
     fun getPreviousVideoByOrder(@RequestParam folder: String): VideoDto {
         return videoService.getPreviousVideoByOrder(folder)
     }
+
+    @GetMapping("/get-marked-video-number")
+    fun getMarkedVideoNumber(): Long {
+        return videoService.getMarkedVideoNumber()
+    }
 }

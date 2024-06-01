@@ -38,6 +38,7 @@ class VideoController(
         model.addAttribute("paginatedData", videoService.getVideoPage(pageable))
         model.addAttribute("pageSize", pageSize)
         model.addAttribute("paginationArray", paginationArray)
+        model.addAttribute("markedVideosNumber", videoService.getMarkedVideoNumber())
         return "video-page"
     }
 

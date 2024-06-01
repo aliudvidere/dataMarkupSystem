@@ -46,4 +46,7 @@ interface VideoClient {
 
     @GetMapping("/get-prev-by-order")
     fun getPreviousVideoByOrder(@RequestParam folder: String): VideoDto
+
+    @GetMapping(value = ["/get-marked-video-number"])
+    fun getMarkedVideoNumber(): Long
 }
