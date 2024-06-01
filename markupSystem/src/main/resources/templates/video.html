@@ -21,7 +21,7 @@
         <a th:href="'/markup/video-page?page=' + ${pageNumber} + '&size=' + ${pageSize}" class="btn btn-info" th:text="'Back to list'" style="position: absolute;top: 40%;left: 10%;transform:translateX(-50%);"/>
     </div>
     <div class="text-center container">
-        <h2 th:text="${video.name} + '. Marked videos: ' + ${number}" style="position: absolute; top: 35%; left:86%; transform: translateX(-50%);"/>
+        <h2 th:text="${video.name} + '. Marked videos: ' + ${markedVideosNumber}" style="position: absolute; top: 35%; left:86%; transform: translateX(-50%);"/>
         <textarea th:text="${video.getTextDescription()}" cols=40 rows=8 disabled style="position: absolute; top: 40%; left:88%; transform: translateX(-50%);"/><br>
     </div>
 
