@@ -57,6 +57,7 @@ class VideoController(
         model.addAttribute("video", videoService.getVideo(folder))
         model.addAttribute("pageSize", pageSize)
         model.addAttribute("pageNumber", currentPage)
+        model.addAttribute("markedVideosNumber", videoService.getMarkedVideoNumber())
         return "video"
     }
 
@@ -71,6 +72,7 @@ class VideoController(
         model.addAttribute("video", videoService.getNextVideoByOrder(folder))
         model.addAttribute("pageSize", pageSize)
         model.addAttribute("pageNumber", currentPage)
+        model.addAttribute("markedVideosNumber", videoService.getMarkedVideoNumber())
         return "video"
     }
 
@@ -79,6 +81,7 @@ class VideoController(
         model.addAttribute("video", videoService.getPreviousVideoByOrder(folder))
         model.addAttribute("pageSize", pageSize)
         model.addAttribute("pageNumber", currentPage)
+        model.addAttribute("markedVideosNumber", videoService.getMarkedVideoNumber())
         return "video"
     }
 }

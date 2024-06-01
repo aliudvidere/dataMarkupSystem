@@ -8,7 +8,7 @@
 <body>
     <header th:insert="blocks/header :: header"></header>
     <div class="text-center container mt-5 mb-5">
-        <video width="50%" controls style="position: absolute;top: 7%;left: 50%;transform:translateX(-50%);">
+        <video width="50%" controls style="position: absolute;top: 7%;left: 50%;transform:translateX(-50%);" id="video_sample">
             <source th:src="@{|/stream-video/${video.getName()}|}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -21,7 +21,7 @@
         <a th:href="'/markup/video-page?page=' + ${pageNumber} + '&size=' + ${pageSize}" class="btn btn-info" th:text="'Back to list'" style="position: absolute;top: 40%;left: 10%;transform:translateX(-50%);"/>
     </div>
     <div class="text-center container">
-        <h2 th:text="${video.name}" style="position: absolute; top: 35%; left:86%; transform: translateX(-50%);"/>
+        <h2 th:text="${video.name} + '. Marked videos: ' + ${number}" style="position: absolute; top: 35%; left:86%; transform: translateX(-50%);"/>
         <textarea th:text="${video.getTextDescription()}" cols=40 rows=8 disabled style="position: absolute; top: 40%; left:88%; transform: translateX(-50%);"/><br>
     </div>
 
@@ -35,6 +35,30 @@
             </li>
         </ul>
     </div>
+<!--    <div style="position: absolute; top: 97%; left:50%; transform: translateX(-50%);">-->
+<!--        <button ondblclick="SpeedUp()" type="button" class="btn btn-info">-->
+<!--            SpeedUp-->
+<!--        </button>-->
+<!--        <button ondblclick="SpeedDown()" type="button" class="btn btn-info">-->
+<!--            SpeedDown-->
+<!--        </button>-->
+<!--    </div>-->
+
+    <script>
+        let v =
+            document.getElementById("video_sample");
+        v.playbackRate = 5;
+
+        // function SpeedUp() {
+        //     v.playbackRate += 1;
+        // }
+        //
+        // function SpeedDown() {
+        //     if (v.playbackRate !== 1) {
+        //         v.playbackRate -= 1;
+        //     }
+        // }
+    </script>
 </body>
 </html>
 
